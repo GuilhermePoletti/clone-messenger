@@ -21,15 +21,15 @@ export const authOptions: AuthOptions = {
     CredentialsProvider({
       name: 'credentials',
       credentials: {
-        email: { label: 'email', type: 'text'},
-        password: { label: 'password', type: 'password'},
+        email: { label: 'email', type: 'text' },
+        password: { label: 'password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Email or Password is required');
         }
 
-        const user  = await prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
           where: {
             email: credentials.email,
           }
@@ -44,12 +44,21 @@ export const authOptions: AuthOptions = {
           user.hashedPassword
         );
 
-        if(!isCorrectPassword) {
+        if (!isCorrectPassword) {
           throw new Error('Invalid credentials');
         }
 
         return user;
       }
     })
-  ]
-}
+  ],
+  debug: process.env.NODE_ENV === 'development',
+  session: {
+    strategy: "jwt",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+};
+
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST};
