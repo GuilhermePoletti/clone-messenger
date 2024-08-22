@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useState } from "react";
+import axios from "axios";
 import {
     Field,
     FieldValues
@@ -12,6 +13,8 @@ import { BsGithub, BsGoogle } from 'react-icons/bs';
 import Input from "../../components/inputs/Input";
 import Button from "@/app/components/Button";
 import AuthSocialButton from "./AuthSocialButton";
+import { toast } from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 type Variant = 'LOGIN' | 'REGISTER';
 
@@ -45,18 +48,43 @@ const AuthForm = () => {
         setIsLoading(true);
 
         if (variant === 'REGISTER') {
-            // AXIOS register
+            axios.post('/api/register', data)
+                .catch(() => toast.error('algo deu errado'))
+                .finally(() => setIsLoading(false))
         }
 
         if (variant === 'LOGIN') {
-            // NextAuth SignIn
+            signIn('credentials', {
+                ...data,
+                redirect: false,
+            })
+                .then((callback) => {
+                    if (callback?.error) {
+                        toast.error('Credenciais Inválidas')
+                    }
+
+                    if (callback?.ok && !callback?.error) {
+                        toast.success('Logado!')
+                    }
+                })
+                .finally(() => setIsLoading(false))
         }
     }
 
     const socialAction = (action: string) => {
         setIsLoading(true);
 
-        // NextAuth Social Sign in
+        signIn(action, { redirect: false })
+            .then((callback) => {
+                if (callback?.error) {
+                    toast.error('Credenciais Inválidas')
+                }
+
+                if (callback?.ok && !callback?.error) {
+                    toast.success('Logado!')
+                }
+            })
+            .finally(() => setIsLoading(false))//1:53:01
     }
 
     return (
@@ -147,12 +175,12 @@ const AuthForm = () => {
                     </div>
 
                     <div className="mt-6 flex gap-2">
-                        <AuthSocialButton 
-                            icon={BsGithub} 
+                        <AuthSocialButton
+                            icon={BsGithub}
                             onClick={() => socialAction('github')}
                         />
-                         <AuthSocialButton 
-                            icon={BsGoogle} 
+                        <AuthSocialButton
+                            icon={BsGoogle}
                             onClick={() => socialAction('google')}
                         />
                     </div>
