@@ -16,7 +16,10 @@ const EmptyState = () => {
       <div className="text-center items-center flex flex-col">
         <h3
           className="
-
+            mt-2
+            text-2xl
+            font-semibold
+            text-gray-900
           "
         >
           Selecione um chat ou comece uma nova conversa
@@ -26,4 +29,4 @@ const EmptyState = () => {
   );
 }
  
-export default EmptyState; //2:11:22
+export default EmptyState;
