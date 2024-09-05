@@ -32,4 +32,4 @@ export async function POST(
     console.log(error, 'REGISTRATION_ERROR');
     return new NextResponse('Internal Error', { status: 500 });
   }
-}; //1:37
+};
