@@ -16,13 +16,13 @@ const DesktopItem: React.FC<DesktopItemProps> = ({
   icon: Icon,
   href,
   onClick,
-  active
+  active,
 }) => {
   const handleClick = () => {
-    if (onclick) {
-      return onClick;
+    if (onClick) {
+      return onClick()
     }
-  };
+  }
 
   return (
     <li onClick={handleClick}>
