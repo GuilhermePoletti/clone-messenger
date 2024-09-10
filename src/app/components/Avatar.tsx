@@ -47,7 +47,7 @@ const Avatar: React.FC<AvatarProps> = ({
         "
       />
     </div>
-  );2:58:41
+  );
 }
 
 export default Avatar;
