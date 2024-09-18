@@ -9,10 +9,15 @@ const Home = () => {
   const {isOpen} = useConversation();
 
   return (
-    <div>
+    <div
+      className={clsx(
+        "lg:pl-80 h-full lg:block",
+        isOpen ? "block" : "hidden"
+      )}
+    >
       <EmptyState/>
     </div>
   )
 };
 
-export default Home;3:29:44
+export default Home;
